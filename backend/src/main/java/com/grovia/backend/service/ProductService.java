@@ -20,6 +20,7 @@ public class ProductService {
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
+
     public Optional<Product> getProductById(Long id) {
         return productRepository.findById(id);
     }
@@ -27,6 +28,7 @@ public class ProductService {
     public Product createProduct(Product product) {
         return productRepository.save(product);
     }
+
     public Product updateProduct(Long id, Product updatedProduct) {
         Optional<Product> product = productRepository.findById(id);
 
@@ -43,10 +45,14 @@ public class ProductService {
 
         return null;
     }
-    public boolean deleteProduct(Long id){
+
+    public boolean deleteProduct(Long id) {
         Optional<Product> product = productRepository.findById(id);
-        if(product.isEmpty()) return false;
+        if (product.isEmpty()) {
+            return false;
+        }
         productRepository.deleteById(id);
         return true;
     }
+
 }
