@@ -69,5 +69,11 @@ public class ProductController {
                     .status(HttpStatus.NOT_FOUND)
                     .body("Product not found");
         }
+
+    }
+    
+    @GetMapping("/api/products/category/{categoryId}")
+    public List<Product> getProductsByCategory(@PathVariable Long categoryId) {
+        return productService.getProductsByCategoryId(categoryId);
     }
 }
