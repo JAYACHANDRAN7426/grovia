@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grovia.backend.entity.Product;
 import com.grovia.backend.service.ProductService;
+import jakarta.validation.Valid;
 
 @RestController
 public class ProductController {
@@ -42,15 +44,15 @@ public class ProductController {
 
         return ResponseEntity.ok(product.get());
     }
-  
+
     @PostMapping("/api/products")
-    public ResponseEntity<?> createProduct(@RequestBody Product product) {
+    public ResponseEntity<?> createProduct(@Valid @RequestBody Product product) {
         Product savedProduct = productService.createProduct(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
     }
 
     @PutMapping("/api/products/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody Product upproduct) {
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @Valid @RequestBody Product upproduct) {
         Product product = productService.updateProduct(id, upproduct);
         if (product == null) {
             return ResponseEntity
@@ -63,17 +65,22 @@ public class ProductController {
     @DeleteMapping("/api/products/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
         if (productService.deleteProduct(id)) {
-            return ResponseEntity.noContent().build(); 
-        }else {
+            return ResponseEntity.noContent().build();
+        } else {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body("Product not found");
         }
 
     }
-    
+
     @GetMapping("/api/products/category/{categoryId}")
     public List<Product> getProductsByCategory(@PathVariable Long categoryId) {
         return productService.getProductsByCategoryId(categoryId);
+    }
+
+    @GetMapping("/api/products/search")
+    public List<Product> searchProductsByName(@RequestParam String name) {
+        return productService.searchProductsByName(name);
     }
 }

@@ -7,5 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.grovia.backend.entity.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    List<Product> findByCategoryId(Long categoryId);    
+    List<Product> findByCategoryId(Long categoryId);  
+    List<Product> findByNameContainingIgnoreCase(String name);  
 }
